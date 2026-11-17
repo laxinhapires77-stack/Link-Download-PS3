@@ -1,0 +1,27 @@
+name: Gerar PKG do PS3
+
+on:
+  push:
+    branches: [ "main", "principal" ]
+  workflow_dispatch:
+
+jobs:
+  compilar:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/ps3dev/ps3toolchain:latest
+
+    steps:
+      - name: Baixar arquivos do projeto
+        uses: actions/checkout@v4
+
+      - name: Compilar EBOOT e empacotar PKG
+        run: |
+          make pkg
+
+      - name: Salvar PKG pronto para download
+        uses: actions/upload-artifact@v4
+        with:
+          name: LinkDownload-PS3-PKG
+          path: "*.pkg"
+          
