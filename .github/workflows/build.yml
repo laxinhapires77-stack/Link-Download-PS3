@@ -9,7 +9,7 @@ jobs:
   compilar:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/ps3dev/ps3toolchain:latest
+      image: hldtux/ps3dev:latest
 
     steps:
       - name: Baixar arquivos do projeto
@@ -17,6 +17,9 @@ jobs:
 
       - name: Compilar EBOOT e empacotar PKG
         run: |
+          export PS3DEV=/usr/local/ps3dev
+          export PSL1GHT=$PS3DEV
+          export PATH=$PATH:$PS3DEV/bin:$PS3DEV/ppu/bin:$PS3DEV/spu/bin
           make pkg
 
       - name: Salvar PKG pronto para download
@@ -24,4 +27,3 @@ jobs:
         with:
           name: LinkDownload-PS3-PKG
           path: "*.pkg"
-          
